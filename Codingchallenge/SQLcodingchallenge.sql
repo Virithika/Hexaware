@@ -155,11 +155,8 @@ SELECT * FROM Payment
 WHERE YEAR(transactionDate) = 2023;
 
 --12. Retrieve customers who have not made any payments.
-SELECT C.*
-FROM Customer C
-LEFT JOIN Lease L ON C.customerID = L.customerID
-LEFT JOIN Payment P ON L.leaseID = P.leaseID
-WHERE P.paymentID IS NULL;
+SELECT * FROM Customer
+WHERE customerID NOT IN (SELECT DISTINCT customerID FROM Lease WHERE leaseID IN (SELECT DISTINCT leaseID FROM Payment));
 
 --13. Retrieve Car Details and Their Total Payments.
 SELECT V.vehicleID, V.make, V.model, SUM(P.amount) AS TotalPayments
